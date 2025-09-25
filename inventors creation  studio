@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2196F3;
+            --dark: #1a1a1a;
+            --light: #ffffff;
+            --accent: #FF4081;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(26, 26, 26, 0.95);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+        }
+
+        /* Tools Section */
+        .tools-section {
+            padding: 5rem 2rem;
+            background-color: #222;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+        }
+
+        .tool-card h3 {
+            color: var(--primary);
+            margin: 1rem 0;
+            font-size: 1.5rem;
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .tool-card p {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary);
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--light);
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--primary);
+        }
+
+        .tool-interface {
+            padding: 1rem;
+        }
+
+        .tool-interface h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            background-color: #333;
+            border: 2px solid #444;
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        #output-area {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #333;
+            border-radius: 8px;
+            min-height: 150px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <i class="fas fa-robot"></i>
+                AI Tools Platform
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Welcome to AI Tools Platform</h1>
+            <p>Explore our collection of powerful AI tools designed to enhance your productivity and creativity</p>
+            <a href="#tools" class="btn">Explore Tools</a>
+        </div>
+    </section>
+
+    <section class="tools-section" id="tools">
+        <h2 class="section-title">Our Tools</h2>
+        <div class="tools-grid">
+            <div class="tool-card">
+                <i class="fas fa-text-height tool-icon"></i>
+                <h3>Text Generator</h3>
+                <p>Create engaging content with our advanced AI text generation tool</p>
+                <button class="btn" onclick="openTool('text-generator')">Try Now</button>
+            </div>
+            <div class="tool-card">
+                <i class="fas fa-image tool-icon"></i>
+                <h3>Image Generator</h3>
+                <p>Transform your ideas into stunning visuals using AI</p>
+                <button class="btn" onclick="openTool('image-generator')">Try Now</button>
+            </div>
+            <div class="tool-card">
+                <i class="fas fa-code tool-icon"></i>
+                <h3>Code Assistant</h3>
+                <p>Get intelligent coding suggestions and solutions</p>
+                <button class="btn" onclick="openTool('code-assistant')">Try Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tool Modal -->
+    <div id="tool-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeTool()">&times;</span>
+            <div id="tool-interface" class="tool-interface">
+                <h2 id="tool-title">Tool Name</h2>
+                <div class="input-group">
+                    <label for="input-area">Enter your prompt:</label>
+                    <textarea id="input-area" placeholder="Enter your prompt here..."></textarea>
+                </div>
+                <button class="btn" onclick="processInput()">Generate</button>
+                <div id="output-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tool functionality
+        function openTool(toolId) {
+            const modal = document.getElementById('tool-modal');
+            const toolTitle = document.getElementById('tool-title');
+            const inputArea = document.getElementById('input-area');
+            const outputArea = document.getElementById('output-area');
+
+            // Reset the interface
+            inputArea.value = '';
+            outputArea.innerHTML = '';
+
+            // Set up the tool interface based on the selected tool
+            switch(toolId) {
+                case 'text-generator':
+                    toolTitle.textContent = 'Text Generator';
+                    inputArea.placeholder = 'Enter a topic or prompt for text generation...';
+                    break;
+                case 'image-generator':
+                    toolTitle.textContent = 'Image Generator';
+                    inputArea.placeholder = 'Describe the image you want to generate...';
+                    break;
+                case 'code-assistant':
+                    toolTitle.textContent = 'Code Assistant';
+                    inputArea.placeholder = 'Enter your coding question or paste your code...';
+                    break;
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeTool() {
+            const modal = document.getElementById('tool-modal');
+            modal.style.display = 'none';
+        }
+
+        function processInput() {
+            const inputArea = document.getElementById('input-area');
+            const outputArea = document.getElementById('output-area');
+            const toolTitle = document.getElementById('tool-title');
+            const input = inputArea.value.trim();
+
+            if (!input) {
+                alert('Please enter some input first!');
+                return;
+            }
+
+            // Show loading animation
+            outputArea.innerHTML = '<div class="loading"></div>';
+            
+            // Simulate processing with different responses based on the tool
+            setTimeout(() => {
+                switch(toolTitle.textContent) {
+                    case 'Text Generator':
+                        outputArea.innerHTML = `
+                            <h3 style="color: var(--primary); margin-bottom: 1rem;">Generated Text:</h3>
+                            <p style="line-height: 1.6;">${input} - This is a sample AI-generated text based on your input. 
+                            In a real implementation, this would be processed by an AI model to generate creative and contextually 
+                            relevant content based on your prompt.</p>`;
+                        break;
+                    case 'Image Generator':
+                        outputArea.innerHTML = `
+                            <h3 style="color: var(--primary); margin-bottom: 1rem;">Image Generation Request:</h3>
+                            <p style="line-height: 1.6;">Your request to generate an image of "${input}" has been received. 
+                            In a real implementation, this would connect to an AI image generation model to create a unique 
+                            image based on your description.</p>`;
+                        break;
+                    case 'Code Assistant':
+                        outputArea.innerHTML = `
+                            <h3 style="color: var(--primary); margin-bottom: 1rem;">Code Analysis:</h3>
+                            <pre style="background: #333; padding: 1rem; border-radius: 8px; overflow-x: auto;">
+// Here's a sample response for your code query:
+// In a real implementation, this would provide actual code assistance.
+function analyzeCode(input) {
+  console.log("Analyzing: ${input}");
+  // AI-powered code analysis would go here
+  return "Optimized solution";
+}
+                            </pre>`;
+                        break;
+                }
+            }, 1500);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('tool-modal');
+            if (event.target == modal) {
+                closeTool();
+            }
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
