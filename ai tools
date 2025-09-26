@@ -1,0 +1,100 @@
+// Tool functionality
+function openTool(toolId) {
+    const modal = document.getElementById('tool-modal');
+    const toolTitle = document.getElementById('tool-title');
+    const inputArea = document.getElementById('input-area');
+    const outputArea = document.getElementById('output-area');
+
+    // Reset the interface
+    inputArea.value = '';
+    outputArea.innerHTML = '';
+
+    // Set up the tool interface based on the selected tool
+    switch(toolId) {
+        case 'text-generator':
+            toolTitle.textContent = 'Text Generator';
+            inputArea.placeholder = 'Enter a topic or prompt for text generation...';
+            break;
+        case 'image-generator':
+            toolTitle.textContent = 'Image Generator';
+            inputArea.placeholder = 'Describe the image you want to generate...';
+            break;
+        case 'code-assistant':
+            toolTitle.textContent = 'Code Assistant';
+            inputArea.placeholder = 'Enter your coding question or paste your code...';
+            break;
+    }
+
+    modal.style.display = 'block';
+}
+
+function closeTool() {
+    const modal = document.getElementById('tool-modal');
+    modal.style.display = 'none';
+}
+
+function processInput() {
+    const inputArea = document.getElementById('input-area');
+    const outputArea = document.getElementById('output-area');
+    const toolTitle = document.getElementById('tool-title');
+    const input = inputArea.value.trim();
+
+    if (!input) {
+        alert('Please enter some input first!');
+        return;
+    }
+
+    // Show loading animation
+    outputArea.innerHTML = '<div class="loading"></div>';
+    
+    // Simulate processing with different responses based on the tool
+    setTimeout(() => {
+        switch(toolTitle.textContent) {
+            case 'Text Generator':
+                outputArea.innerHTML = `
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Generated Text:</h3>
+                    <p style="line-height: 1.6;">${input} - This is a sample AI-generated text based on your input. 
+                    In a real implementation, this would be processed by an AI model to generate creative and contextually 
+                    relevant content based on your prompt.</p>`;
+                break;
+            case 'Image Generator':
+                outputArea.innerHTML = `
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Image Generation Request:</h3>
+                    <p style="line-height: 1.6;">Your request to generate an image of "${input}" has been received. 
+                    In a real implementation, this would connect to an AI image generation model to create a unique 
+                    image based on your description.</p>`;
+                break;
+            case 'Code Assistant':
+                outputArea.innerHTML = `
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Code Analysis:</h3>
+                    <pre style="background: #333; padding: 1rem; border-radius: 8px; overflow-x: auto;">
+// Here's a sample response for your code query:
+// In a real implementation, this would provide actual code assistance.
+function analyzeCode(input) {
+console.log("Analyzing: ${input}");
+// AI-powered code analysis would go here
+return "Optimized solution";
+}
+                    </pre>`;
+                break;
+        }
+    }, 1500);
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('tool-modal');
+    if (event.target == modal) {
+        closeTool();
+    }
+}
+
+// Smooth scrolling for navigation
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
